@@ -1,0 +1,4 @@
+* text=auto eol=lf
+*.sh           text eol=lf
+.gitignore     text eol=lf
+/run-configure text eol=lf

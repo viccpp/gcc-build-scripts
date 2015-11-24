@@ -1,0 +1,6 @@
+#!/bin/sh
+
+[ -d build ] || mkdir build
+cd build
+../gcc-5.2.0/configure --prefix=/opt/gcc-5.2 --enable-languages=c,c++ --disable-multilib --enable-lto
+# --disable-symvers

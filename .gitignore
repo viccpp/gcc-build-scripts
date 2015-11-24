@@ -1,0 +1,6 @@
+/build
+/gcc-*
+/gmp-*
+/isl-*
+/mpc-*
+/mpfr-*

@@ -1,0 +1,118 @@
+diff -Naur a/libstdc++-v3/src/c++11/cow-string-inst.cc b/libstdc++-v3/src/c++11/cow-string-inst.cc
+--- a/libstdc++-v3/src/c++11/cow-string-inst.cc	2015-01-05 15:33:28 +0300
++++ b/libstdc++-v3/src/c++11/cow-string-inst.cc	2015-04-23 10:50:27 +0300
+@@ -29,9 +29,6 @@
+ #define _GLIBCXX_USE_CXX11_ABI 0
+ #include "string-inst.cc"
+ 
+-#include <istream>
+-#include <ostream>
+-
+ #if ! _GLIBCXX_USE_DUAL_ABI
+ # error This file should not be compiled for this configuration.
+ #endif
+@@ -42,18 +39,6 @@
+ 
+   // These came from c++98/misc-inst.cc, repeat them for COW string
+   // string related to iostreams.
+-  template 
+-    basic_istream<char>& 
+-    operator>>(basic_istream<char>&, string&);
+-  template 
+-    basic_ostream<char>& 
+-    operator<<(basic_ostream<char>&, const string&);
+-  template 
+-    basic_istream<char>& 
+-    getline(basic_istream<char>&, string&, char);
+-  template 
+-    basic_istream<char>& 
+-    getline(basic_istream<char>&, string&);
+ 
+ _GLIBCXX_END_NAMESPACE_VERSION
+ } // namespace
+diff -Naur a/libstdc++-v3/src/c++11/cow-string-iostream.cc b/libstdc++-v3/src/c++11/cow-string-iostream.cc
+--- a/libstdc++-v3/src/c++11/cow-string-iostream.cc	1970-01-01 03:00:00 +0300
++++ b/libstdc++-v3/src/c++11/cow-string-iostream.cc	2015-04-23 10:50:05 +0300
+@@ -0,0 +1,60 @@
++// Reference-counted COW string instantiations -*- C++ -*-
++
++// Copyright (C) 2014-2015 Free Software Foundation, Inc.
++//
++// This file is part of the GNU ISO C++ Library.  This library is free
++// software; you can redistribute it and/or modify it under the
++// terms of the GNU General Public License as published by the
++// Free Software Foundation; either version 3, or (at your option)
++// any later version.
++
++// This library is distributed in the hope that it will be useful,
++// but WITHOUT ANY WARRANTY; without even the implied warranty of
++// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++// GNU General Public License for more details.
++
++// Under Section 7 of GPL version 3, you are granted additional
++// permissions described in the GCC Runtime Library Exception, version
++// 3.1, as published by the Free Software Foundation.
++
++// You should have received a copy of the GNU General Public License and
++// a copy of the GCC Runtime Library Exception along with this program;
++// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
++// <http://www.gnu.org/licenses/>.
++
++//
++// ISO C++ 14882: 21  Strings library
++//
++
++#define _GLIBCXX_USE_CXX11_ABI 0
++
++#include <istream>
++#include <ostream>
++
++#if ! _GLIBCXX_USE_DUAL_ABI
++# error This file should not be compiled for this configuration.
++#endif
++
++namespace std _GLIBCXX_VISIBILITY(default)
++{
++_GLIBCXX_BEGIN_NAMESPACE_VERSION
++
++  // These came from c++98/misc-inst.cc, repeat them for COW string
++  // string related to iostreams.
++  template 
++    basic_istream<char>& 
++    operator>>(basic_istream<char>&, string&);
++  template 
++    basic_ostream<char>& 
++    operator<<(basic_ostream<char>&, const string&);
++  template 
++    basic_istream<char>& 
++    getline(basic_istream<char>&, string&, char);
++  template 
++    basic_istream<char>& 
++    getline(basic_istream<char>&, string&);
++
++_GLIBCXX_END_NAMESPACE_VERSION
++} // namespace
++
++#endif
+diff -Naur a/libstdc++-v3/src/c++11/functexcept.cc b/libstdc++-v3/src/c++11/functexcept.cc
+--- a/libstdc++-v3/src/c++11/functexcept.cc	2015-01-05 15:33:28 +0300
++++ b/libstdc++-v3/src/c++11/functexcept.cc	2015-04-23 10:48:35 +0300
+@@ -92,17 +92,7 @@
+   void
+   __throw_out_of_range_fmt(const char* __fmt, ...)
+   {
+-    const size_t __len = __builtin_strlen(__fmt);
+-    // We expect at most 2 numbers, and 1 short string. The additional
+-    // 512 bytes should provide more than enough space for expansion.
+-    const size_t __alloca_size = __len + 512;
+-    char *const __s = static_cast<char*>(__builtin_alloca(__alloca_size));
+-    va_list __ap;
+-
+-    va_start(__ap, __fmt);
+-    __gnu_cxx::__snprintf_lite(__s, __alloca_size, __fmt, __ap);
+-    _GLIBCXX_THROW_OR_ABORT(out_of_range(_(__s)));
+-    va_end(__ap);  // Not reached.
++    __throw_out_of_range(__fmt);
+   }
+ 
+   void

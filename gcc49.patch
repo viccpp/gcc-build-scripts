@@ -1,0 +1,18 @@
+--- libstdc++-v3/src/c++11/functexcept.cc	2014-01-03 02:30:10.000000000 +0400
++++ libstdc++-v3/src/c++11/functexcept.cc	2014-11-06 18:40:20.000000000 +0300
+@@ -89,6 +89,7 @@
+   void
+   __throw_out_of_range_fmt(const char* __fmt, ...)
+   {
++    __throw_out_of_range(__fmt);/*
+     const size_t __len = __builtin_strlen(__fmt);
+     // We expect at most 2 numbers, and 1 short string. The additional
+     // 512 bytes should provide more than enough space for expansion.
+@@ -100,6 +101,7 @@
+     __gnu_cxx::__snprintf_lite(__s, __alloca_size, __fmt, __ap);
+     _GLIBCXX_THROW_OR_ABORT(out_of_range(_(__s)));
+     va_end(__ap);  // Not reached.
++*/
+   }
+ 
+   void
