@@ -1,4 +1,4 @@
-/build
+/_build
 /gcc-*
 /gmp-*.tar.xz
 /isl-*.tar.xz

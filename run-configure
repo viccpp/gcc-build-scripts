@@ -1,9 +1,9 @@
 #!/bin/sh
 
-ver=15.1
+ver=15.2
 prefix=/opt
 
-GCC=gcc-${ver}.0
+GCC=gcc-$ver.0
 GMP=gmp-6.2.1
 ISL=isl-0.24
 MPC=mpc-1.3.0
@@ -15,13 +15,28 @@ ISL_TAR=$ISL.tar.xz
 MPC_TAR=$MPC.tar.gz
 MPFR_TAR=$MPFR.tar.xz
 
-[ -f $GCC_TAR  ] || wget https://ftp.gnu.org/gnu/gcc/$GCC/$GCC_TAR
-[ -f $GMP_TAR  ] || wget https://gmplib.org/download/gmp/$GMP_TAR
-[ -f $ISL_TAR  ] || wget https://libisl.sourceforge.io/$ISL_TAR
-[ -f $MPC_TAR  ] || wget https://www.multiprecision.org/downloads/$MPC_TAR
-[ -f $MPFR_TAR ] || wget https://www.mpfr.org/$MPFR/$MPFR_TAR
+WGET=wget
 
-[ -d build ] || mkdir build
-cd build
+set -e -x
+
+# https://gcc.gnu.org/mirrors.html
+[ -f $GCC_TAR  ] || $WGET https://ftp.gnu.org/gnu/gcc/$GCC/$GCC_TAR
+# https://gmplib.org/
+[ -f $GMP_TAR  ] || $WGET https://gmplib.org/download/gmp/$GMP_TAR
+# https://libisl.sourceforge.io/
+[ -f $ISL_TAR  ] || $WGET https://libisl.sourceforge.io/$ISL_TAR
+# https://www.multiprecision.org/mpc/download.html
+[ -f $MPC_TAR  ] || $WGET https://www.multiprecision.org/downloads/$MPC_TAR
+# https://www.mpfr.org/mpfr-current
+[ -f $MPFR_TAR ] || $WGET https://www.mpfr.org/$MPFR/$MPFR_TAR
+
+[ -d $GCC ] || tar xf $GCC_TAR
+[ -d $GCC/gmp  ] || tar xf $GMP_TAR  && mv $GMP  $GCC/gmp
+[ -d $GCC/isl  ] || tar xf $ISL_TAR  && mv $ISL  $GCC/isl
+[ -d $GCC/mpc  ] || tar xf $MPC_TAR  && mv $MPC  $GCC/mpc
+[ -d $GCC/mpfr ] ||	tar xf $MPFR_TAR && mv $MPFR $GCC/mpfr
+
+[ -d _build ] || mkdir _build
+cd _build
 ../$GCC/configure --prefix=$prefix/gcc-$ver --enable-languages=c,c++ \
 	--disable-multilib --disable-libstdcxx-pch --enable-lto
