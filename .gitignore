@@ -1,6 +1,6 @@
 /build
 /gcc-*
-/gmp-*
-/isl-*
-/mpc-*
-/mpfr-*
+/gmp-*.tar.bz2
+/isl-*.tar.bz2
+/mpc-*.tar.gz
+/mpfr-*.tar.bz2
