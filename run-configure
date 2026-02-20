@@ -1,13 +1,27 @@
 #!/bin/sh
 
-# Deps:
-# gmp-6.1.0.tar.bz2
-# isl-0.16.1.tar.bz2
-# mpc-1.0.3.tar.gz
-# mpfr-3.1.4.tar.bz2
+ver=15.1
+prefix=/opt
+
+GCC=gcc-${ver}.0
+GMP=gmp-6.2.1
+ISL=isl-0.24
+MPC=mpc-1.3.0
+MPFR=mpfr-4.2.0
+
+GCC_TAR=$GCC.tar.xz
+GMP_TAR=$GMP.tar.xz
+ISL_TAR=$ISL.tar.xz
+MPC_TAR=$MPC.tar.gz
+MPFR_TAR=$MPFR.tar.xz
+
+[ -f $GCC_TAR  ] || wget https://ftp.gnu.org/gnu/gcc/$GCC/$GCC_TAR
+[ -f $GMP_TAR  ] || wget https://gmplib.org/download/gmp/$GMP_TAR
+[ -f $ISL_TAR  ] || wget https://libisl.sourceforge.io/$ISL_TAR
+[ -f $MPC_TAR  ] || wget https://www.multiprecision.org/downloads/$MPC_TAR
+[ -f $MPFR_TAR ] || wget https://www.mpfr.org/$MPFR/$MPFR_TAR
 
 [ -d build ] || mkdir build
 cd build
-../gcc-11.3.0/configure --prefix=/opt/gcc-11.3 --enable-languages=c,c++ \
-    --disable-multilib --disable-libstdcxx-pch --enable-lto
-# --disable-symvers
+../$GCC/configure --prefix=$prefix/gcc-$ver --enable-languages=c,c++ \
+	--disable-multilib --disable-libstdcxx-pch --enable-lto
