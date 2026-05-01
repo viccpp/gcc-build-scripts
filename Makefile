@@ -1,6 +1,6 @@
 # GCC build script
 
-VER = 15.2
+VER = 16.1
 prefix = /opt
 
 GCC := gcc-$(VER).0
@@ -17,7 +17,7 @@ MPFR_TAR := $(MPFR).tar.xz
 
 WGET = wget
 
-.PHONY: configure build install clean distclean
+.PHONY: configure build install download clean distclean
 
 build: _build/Makefile
 	cd _build && $(MAKE) -j`nproc`
@@ -44,6 +44,8 @@ $(GCC)/mpfr/configure: $(MPFR_TAR) $(GCC)/configure
 
 $(GCC)/configure: $(GCC_TAR)
 	tar xf $< && touch $@
+
+download: $(GCC_TAR) $(GMP_TAR) $(ISL_TAR) $(MPC_TAR) $(MPFR_TAR) ;
 
 # https://gcc.gnu.org/mirrors.html
 $(GCC_TAR):

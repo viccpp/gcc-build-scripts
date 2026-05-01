@@ -1,6 +1,6 @@
 #!/bin/sh
 
-ver=15.2
+ver=16.1
 prefix=/opt
 
 GCC=gcc-$ver.0
